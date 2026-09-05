@@ -1,0 +1,13 @@
+.shop-items-wrapper {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(300px, auto);
+    gap: 25px;
+    padding: 50px;
+}
+
+.loading-wrapper {
+    margin: auto;
+}
