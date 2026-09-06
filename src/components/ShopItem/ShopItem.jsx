@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./shopItem.css";
 
-const ShopItem = ({ id, title, price, image, setCartItems, setCartCounter }) => {
+const ShopItem = ({ id, title, price, image, setCartItems }) => {
   const [quantity, setQuantity] = useState(1);
 
   const handlePlus = () => {
@@ -28,7 +28,6 @@ const ShopItem = ({ id, title, price, image, setCartItems, setCartCounter }) => 
         return [...prev, newItem];
       }
     });
-    setCartCounter((prev) => prev + quantity);
     setQuantity(1);
   }
   

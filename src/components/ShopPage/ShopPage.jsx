@@ -9,7 +9,7 @@ const ShopPage = () => {
   const [items, setItems] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { setCartItems, setCartCounter } = useOutletContext();
+  const { setCartItems } = useOutletContext();
 
   useEffect(() => {
     let ignore = false;
@@ -66,7 +66,6 @@ const ShopPage = () => {
                 title={item.title}
                 image={item.image}
                 price={item.price}
-                setCartCounter={setCartCounter}
                 setCartItems={setCartItems}
               />
             ))}

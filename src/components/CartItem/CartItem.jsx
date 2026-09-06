@@ -2,8 +2,31 @@ import { mdiDelete } from '@mdi/js';
 import './cartItem.css';
 import IconModule from '@mdi/react';
 
-const CartItem = ({ id, item, setCartItems, setCartCounter }) => {
+const CartItem = ({ item, setCartItems }) => {
   const Icon = IconModule.default;
+
+  const handleDelete = () => {
+    setCartItems((prev) => prev.filter((i) => i.id !== item.id));
+  }
+
+  const handleUpdate = (type) => {
+    setCartItems((prev) =>
+      prev.map((i) => {
+        if (i.id !== item.id) return i;
+        if (type === "increase") {
+          const newQuantity = i.quantity + 1;
+          const newTotal = newQuantity * i.price;
+          return { ...i, quantity: newQuantity, total: newTotal };
+        }
+        if (type === "decrease" && item.quantity > 1) {
+          const newQuantity = i.quantity - 1;
+          const newTotal = newQuantity * i.price;
+          return { ...i, quantity: newQuantity, total: newTotal };
+        }
+        return i;
+      }),
+    );
+  }
 
   return (
     <div className="cart-item">
@@ -18,14 +41,24 @@ const CartItem = ({ id, item, setCartItems, setCartCounter }) => {
       </div>
 
       <div className="cart-item-quantity-wrapper">
-        <button className="cart-item-quantity-btn">-</button>
+        <button
+          className="cart-item-quantity-btn"
+          onClick={() => handleUpdate("decrease")}
+        >
+          -
+        </button>
         <input
           type="number"
           disabled
           className="cart-item-quantity-input"
           value={item.quantity}
         />
-        <button className="cart-item-quantity-btn">+</button>
+        <button
+          className="cart-item-quantity-btn"
+          onClick={() => handleUpdate("increase")}
+        >
+          +
+        </button>
       </div>
 
       <div className="cart-item-sum-wrapper">
@@ -33,8 +66,8 @@ const CartItem = ({ id, item, setCartItems, setCartCounter }) => {
       </div>
 
       <div className="cart-item-remove-wrapper">
-        <button className="cart-item-remove-btn">
-            <Icon size={1.5} path={mdiDelete} title="Remove" color="#eb2424" />
+        <button className="cart-item-remove-btn" onClick={handleDelete}>
+          <Icon size={1.5} path={mdiDelete} title="Remove" color="#eb2424" />
         </button>
       </div>
     </div>
