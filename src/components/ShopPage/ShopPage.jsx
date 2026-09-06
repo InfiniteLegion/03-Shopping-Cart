@@ -3,11 +3,13 @@ import { getProducts } from "../../api/fakeStoreApi.js";
 import './shop.css';
 import ShopItem from "../ShopItem/ShopItem.jsx";
 import { ClipLoader } from "react-spinners";
+import { useOutletContext } from "react-router";
 
 const ShopPage = () => {
   const [items, setItems] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { setCartItems, setCartCounter } = useOutletContext();
 
   useEffect(() => {
     let ignore = false;
@@ -19,8 +21,6 @@ const ShopPage = () => {
         if (!ignore) {
           setItems(data);
           setError(null);
-
-          console.log(data);
         }
       } catch (error) {
         if (!ignore) {
@@ -62,9 +62,12 @@ const ShopPage = () => {
             items.map((item) => (
               <ShopItem
                 key={item.id}
+                id={item.id}
                 title={item.title}
                 image={item.image}
                 price={item.price}
+                setCartCounter={setCartCounter}
+                setCartItems={setCartItems}
               />
             ))}
         </div>

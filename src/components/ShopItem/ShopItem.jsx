@@ -1,17 +1,37 @@
 import { useState } from "react";
 import "./shopItem.css";
 
-const ShopItem = ({ title, price, image }) => {
-  const [count, setCount] = useState(1);
+const ShopItem = ({ id, title, price, image, setCartItems, setCartCounter }) => {
+  const [quantity, setQuantity] = useState(1);
 
   const handlePlus = () => {
-    setCount((count) => count + 1);
+    setQuantity((quantity) => quantity + 1);
   };
 
   const handleMinus = () => {
-    if (count > 1) setCount((count) => count - 1);
+    if (quantity > 1) setQuantity((quantity) => quantity - 1);
   };
 
+  const handleAdd = () => {
+    const total = price * quantity;
+    const newItem = { id: id, title: title, price: price, image: image, quantity: quantity, total: total };
+
+    setCartItems((prev) => {
+      const oldItem = prev.find((i) => i.id === id);
+      if (oldItem) {
+        return prev.map((i) =>
+          i.id === newItem.id
+            ? { ...i, quantity: i.quantity + newItem.quantity }
+            : i,
+        );
+      } else {
+        return [...prev, newItem];
+      }
+    });
+    setCartCounter((prev) => prev + quantity);
+    setQuantity(1);
+  }
+  
   return (
     <div className="card">
       <div className="card-image-wrapper">
@@ -31,7 +51,7 @@ const ShopItem = ({ title, price, image }) => {
         <input
           type="number"
           min={1}
-          value={count}
+          value={quantity}
           disabled
           className="card-count-input"
         />
@@ -39,7 +59,7 @@ const ShopItem = ({ title, price, image }) => {
       </div>
 
       <div className="card-btn-block">
-        <button className="card-add-btn">Add To Cart</button>
+        <button className="card-add-btn" onClick={handleAdd}>Add To Cart</button>
       </div>
     </div>
   );
